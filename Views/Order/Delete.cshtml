@@ -1,0 +1,16 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Usuń zamówienie";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="alert alert-danger">
+    Czy na pewno chcesz usunąć zamówienie o numerze: <strong>@Model.OrderId</strong>?
+</div>
+
+<form asp-action="Delete" asp-route-id="@Model.OrderId" method="post">
+    <button type="submit" class="btn btn-danger">Usuń</button> |
+    <a asp-action="Index">Anuluj</a>
+</form>

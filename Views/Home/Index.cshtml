@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Witaj na stronie głównej!</h1>
+    <p>Opis strony głównej...</p>
+</div>
+
+<div class="text-center">
+    <p>
+        <a asp-controller="Product" asp-action="Index">Przejdź do listy produktów</a>
+    </p>
+    <p>
+        <a asp-controller="Product" asp-action="Create">Dodaj nowy produkt</a>
+    </p>
+    <p>
+        <a asp-controller="Order" asp-action="Index">Przejdź do listy zamówień</a>
+    </p>
+    <p>
+        <a asp-controller="Order" asp-action="Create">Dodaj nowe zamówienie</a>
+    </p>
+</div>

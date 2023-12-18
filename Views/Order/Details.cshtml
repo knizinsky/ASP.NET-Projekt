@@ -1,0 +1,19 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Szczegóły zamówienia";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<dl class="row">
+    <dt class="col-sm-2">Numer zamówienia:</dt>
+    <dd class="col-sm-10">@Model.OrderId</dd>
+
+    <dt class="col-sm-2">Data zamówienia:</dt>
+    <dd class="col-sm-10">@Model.OrderDate.ToShortDateString()</dd>
+    <!-- Dodaj inne pola według potrzeb -->
+</dl>
+<p>
+    <a asp-action="Index">Powrót do listy zamówień</a>
+</p>

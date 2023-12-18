@@ -1,0 +1,22 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "Edytuj produkt";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" asp-route-id="@Model.ProductId">
+    <div class="form-group">
+        <label for="Name">Nazwa:</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Price">Cena:</label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <!-- Dodaj inne pola według potrzeb -->
+    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+</form>

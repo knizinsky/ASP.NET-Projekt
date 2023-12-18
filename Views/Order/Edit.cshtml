@@ -1,0 +1,17 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Edytuj zamówienie";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" asp-route-id="@Model.OrderId">
+    <div class="form-group">
+        <label for="OrderDate">Data zamówienia:</label>
+        <input asp-for="OrderDate" class="form-control" type="date" />
+        <span asp-validation-for="OrderDate" class="text-danger"></span>
+    </div>
+    <!-- Dodaj inne pola według potrzeb -->
+    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+</form>

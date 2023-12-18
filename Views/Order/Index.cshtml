@@ -1,0 +1,37 @@
+﻿@model List<Order>
+
+@{
+    ViewData["Title"] = "Lista Zamówień";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    <a asp-action="Create">Dodaj nowe zamówienie</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Numer zamówienia</th>
+            <th>Data zamówienia</th>
+            <!-- Dodaj inne nagłówki według potrzeb -->
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.OrderDate.ToShortDateString()</td>
+                    <!-- Dodaj inne kolumny według potrzeb -->
+                    <td>
+                        <a asp-action="Details" asp-route-id="@order.OrderId">Szczegóły</a> |
+                        <a asp-action="Edit" asp-route-id="@order.OrderId">Edytuj</a> |
+                        <a asp-action="Delete" asp-route-id="@order.OrderId">Usuń</a>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
