@@ -66,29 +66,18 @@ namespace GroceryStore.Controllers
 
         public IActionResult Edit(int id)
         {
-            var product = _context.Orders.Find(id);
-            if (product == null)
+            var order = _context.Orders.Find(id);
+            if (order == null)
             {
                 return NotFound();
             }
-            return View(product);
-        }
-        private bool ProductExists(int id)
-        {
-            return _context.Orders.Any(p => p.OrderId == id);
+            return View(order);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Order order)
         {
-            if (id != order.OrderId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(order);
@@ -96,7 +85,7 @@ namespace GroceryStore.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(order.OrderId))
+                    if (!OrderExists(id))
                     {
                         return NotFound();
                     }
@@ -106,8 +95,11 @@ namespace GroceryStore.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(order);
+        }
+
+        private bool OrderExists(int id)
+        {
+            return _context.Orders.Any(o => o.OrderId == id);
         }
     }
 }

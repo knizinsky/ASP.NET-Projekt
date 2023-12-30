@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using GroceryStore.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GroceryStore.Controllers
 {
@@ -32,6 +33,7 @@ namespace GroceryStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult Edit(int id)
         {
             var product = _context.Products.Find(id);
@@ -46,6 +48,7 @@ namespace GroceryStore.Controllers
             return _context.Products.Any(p => p.ProductId == id);
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Product product)
@@ -59,7 +62,7 @@ namespace GroceryStore.Controllers
             {
                 try
                 {
-                    _context.Update(product);
+                    _context.Products.Update(product);
                     _context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -76,9 +79,9 @@ namespace GroceryStore.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
-        }
+    }
 
-        public IActionResult Details(int id)
+    public IActionResult Details(int id)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
             if (product == null)
@@ -88,6 +91,7 @@ namespace GroceryStore.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult Delete(int id)
         {
             var product = _context.Products.Find(id);
@@ -99,6 +103,7 @@ namespace GroceryStore.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)

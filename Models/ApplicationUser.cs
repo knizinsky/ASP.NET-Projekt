@@ -1,9 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace GroceryStore.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        // Dodatkowe właściwości użytkownika, jeśli są potrzebne
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        [Display(Name = "Remember me")]
+        public bool RememberMe { get; set; }
     }
 }

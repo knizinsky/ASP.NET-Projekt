@@ -7,11 +7,10 @@
 <h2>@ViewData["Title"]</h2>
 
 <form asp-action="Create">
-    <div class="form-group">
+    <div class="form-group w-50">
         <label for="OrderDate">Data zamówienia:</label>
         <input asp-for="OrderDate" class="form-control" type="date" />
         <span asp-validation-for="OrderDate" class="text-danger"></span>
     </div>
-    <!-- Dodaj inne pola według potrzeb -->
-    <button type="submit" class="btn btn-primary">Dodaj</button>
+    <button type="submit" class="mt-3 btn btn-primary">Dodaj</button>
 </form>

@@ -1,23 +1,68 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Witaj na stronie głównej!</h1>
-    <p>Opis strony głównej...</p>
+<style>
+    body {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(127, 185, 255, 0.88) 100%), url('img/background.jpg') center center fixed;
+        background-size: cover;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container text-center">
+    <div>
+        <h1 class="display-4">Sklep Spożywczy Online</h1>
+        <h5 class="py-4">
+Oferujemy świeże produkty najwyższej jakości. Znajdziesz u nas wszystko, czego potrzebujesz do pysznych i zdrowych posiłków. <br> Zapraszamy do zakupów!</h5>
+    </div>
 </div>
 
-<div class="text-center">
-    <p>
-        <a asp-controller="Product" asp-action="Index">Przejdź do listy produktów</a>
-    </p>
-    <p>
-        <a asp-controller="Product" asp-action="Create">Dodaj nowy produkt</a>
-    </p>
-    <p>
-        <a asp-controller="Order" asp-action="Index">Przejdź do listy zamówień</a>
-    </p>
-    <p>
-        <a asp-controller="Order" asp-action="Create">Dodaj nowe zamówienie</a>
-    </p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body bg-primary bg-gradient box-shadow text-light rounded">
+                    <h5 class="card-title">Lista produktów</h5>
+                    <p class="card-text">Przeglądaj naszą ofertę produktów.</p>
+                    <a href="@Url.Action("Index", "Product")" class="btn btn-light">Przejdź do listy produktów</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body bg-primary bg-gradient box-shadow text-light rounded">
+                    <h5 class="card-title">Dodaj nowy produkt</h5>
+                    <p class="card-text">Dodaj nowy produkt do naszej oferty.</p>
+                    <a href="@Url.Action("Create", "Product")" class="btn btn-light">Dodaj nowy produkt</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body bg-primary bg-gradient box-shadow text-light rounded">
+                    <h5 class="card-title">Lista zamówień</h5>
+                    <p class="card-text">Sprawdź historię swoich zamówień.</p>
+                    <a href="@Url.Action("Index", "Order")" class="btn btn-light">Przejdź do listy zamówień</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body bg-primary bg-gradient box-shadow text-light rounded">
+                    <h5 class="card-title">Dodaj nowe zamówienie</h5>
+                    <p class="card-text">Złóż nowe zamówienie i ciesz się naszymi produktami.</p>
+                    <a href="@Url.Action("Create", "Order")" class="btn btn-light">Dodaj nowe zamówienie</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -7,31 +7,31 @@
 <h2>@ViewData["Title"]</h2>
 
 <p>
-    <a asp-action="Create">Dodaj nowy produkt</a>
+    <a class="btn btn-primary" asp-action="Create">Dodaj nowy produkt</a>
 </p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nazwa</th>
-            <th>Cena</th>
-            <!-- Dodaj inne nagłówki według potrzeb -->
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in Model)
-        {
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
             <tr>
-                <td>@product.Name</td>
-                <td>@product.Price</td>
-                <!-- Dodaj inne kolumny według potrzeb -->
-                <td>
-                    <a asp-action="Details" asp-route-id="@product.ProductId">Szczegóły</a> |
-                    <a asp-action="Edit" asp-route-id="@product.ProductId">Edytuj</a> |
-                    <a asp-action="Delete" asp-route-id="@product.ProductId">Usuń</a>
-                </td>
+                <th>Nazwa Produktu</th>
+                <th>Cena</th>
+                <th>Akcje</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Price zł</td>
+                    <td>
+                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@product.ProductId">Szczegóły</a>
+                        <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@product.ProductId">Edytuj</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@product.ProductId">Usuń</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
