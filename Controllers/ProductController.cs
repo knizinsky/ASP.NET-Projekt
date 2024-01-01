@@ -32,8 +32,12 @@ namespace GroceryStore.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
+        private bool ProductExists(int id)
+        {
+            System.Diagnostics.Debug.WriteLine("1", _context.Products.Any(p => p.ProductId == id));
+            return _context.Products.Any(p => p.ProductId == id);
+        }
 
-        [Authorize(Roles = "Administrator")]
         public IActionResult Edit(int id)
         {
             var product = _context.Products.Find(id);
@@ -43,45 +47,42 @@ namespace GroceryStore.Controllers
             }
             return View(product);
         }
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(p => p.ProductId == id);
-        }
 
-        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Product product)
+        public IActionResult Edit(int id, Product updatedProduct)
         {
-            if (id != product.ProductId)
+            var existingProduct = _context.Products.Find(id);
+
+            if (existingProduct == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Products.Update(product);
-                    _context.SaveChanges();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.ProductId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(product);
-    }
+            existingProduct.Name = updatedProduct.Name;
+            existingProduct.Price = updatedProduct.Price;
 
-    public IActionResult Details(int id)
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        public IActionResult Details(int id)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
             if (product == null)
@@ -113,6 +114,5 @@ namespace GroceryStore.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
-
     }
 }

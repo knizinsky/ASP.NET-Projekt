@@ -76,11 +76,19 @@ namespace GroceryStore.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Order order)
+        public IActionResult Edit(int id, Order updatedOrder)
         {
-                try
+            var existingOrder = _context.Orders.Find(id);
+
+            if (existingOrder == null)
+            {
+                return NotFound();
+            }
+
+            existingOrder.OrderDate = updatedOrder.OrderDate;
+
+            try
                 {
-                    _context.Update(order);
                     _context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)

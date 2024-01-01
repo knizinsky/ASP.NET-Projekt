@@ -6,16 +6,19 @@
 
 <h2>@ViewData["Title"]</h2>
 
+@if (User.Identity.IsAuthenticated && User.Identity.Name == "admin")
+{
 <p>
     <a asp-action="Create" class="btn btn-primary mt-2">Dodaj nowe zamówienie</a>
-</p>
+</p>    
+}
 
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
             <th>Numer zamówienia</th>
             <th>Data zamówienia</th>
-            <th></th>
+            <th>Akcje</th>
         </tr>
     </thead>
     <tbody>
@@ -26,8 +29,11 @@
                     <td>@order.OrderDate.ToShortDateString()</td>
                     <td>
                         <a class="btn btn-primary" asp-action="Details" asp-route-id="@order.OrderId">Szczegóły</a>
+                    @if (User.Identity.IsAuthenticated && User.Identity.Name == "admin")
+                    {
                         <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@order.OrderId">Edytuj</a>
                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@order.OrderId">Usuń</a>
+                    }
                     </td>
                 </tr>
         }

@@ -1,9 +1,6 @@
 ﻿using GroceryStore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
 
 namespace GroceryStore.Controllers
 {
@@ -28,14 +25,17 @@ namespace GroceryStore.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(ApplicationUser model)
         {
+            if(model.UserName == null)
+            {
+                ModelState.AddModelError(string.Empty, "Pole nazwa użytkownika jest wymagane.");
+                return View(model);
+            }
             var user = await _userManager.FindByNameAsync(model.UserName);
 
             if (user != null)
             {
-                Debug.WriteLine($"Attempting login for user: {user.UserName}, Password: {model.Password}");
-                user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, model.Password);
-                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
-
+                System.Diagnostics.Debug.WriteLine(user, model.Password);
+                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe = false, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _httpContextAccessor.HttpContext.Session.SetString("UserName", user.UserName);
@@ -43,11 +43,11 @@ namespace GroceryStore.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Nieprawidłowe dane logowania.");
                 }
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            ModelState.AddModelError(string.Empty, "Nieprawidłowe dane logowania.");
             return View(model);
         }
 

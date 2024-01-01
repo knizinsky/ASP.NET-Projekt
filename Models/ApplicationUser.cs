@@ -5,7 +5,6 @@ namespace GroceryStore.Models
 {
     public class ApplicationUser : IdentityUser
     {
-
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }

@@ -56,6 +56,7 @@ namespace GroceryStore.Models
         public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             var adminEmail = "admin@example.com";
+            var adminName = "admin";
             var adminPassword = "Password123!";
 
             var adminUser = userManager.FindByEmailAsync(adminEmail).Result;
@@ -64,13 +65,64 @@ namespace GroceryStore.Models
             {
                 adminUser = new ApplicationUser
                 {
-                    UserName = adminEmail,
+                    UserName = adminName,
                     Email = adminEmail,
+                    Password = adminPassword,
                 };
 
                 userManager.CreateAsync(adminUser, adminPassword).Wait();
+                var roleExists = roleManager.RoleExistsAsync("Administrator").Result;
+
+                if (!roleExists)
+                {
+                    // Jeśli rola nie istnieje, utwórz ją
+                    roleManager.CreateAsync(new IdentityRole("Administrator")).Wait();
+                }
+
+                // Przypisz użytkownikowi rolę "Administrator"
+                var token = userManager.GenerateEmailConfirmationTokenAsync(adminUser).Result;
+                userManager.ConfirmEmailAsync(adminUser, token).Wait();
                 userManager.AddToRoleAsync(adminUser, "Administrator").Wait();
             }
         }
+
+        public static void SeedData(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            Initialize(context, userManager, roleManager);
+
+            // Dodaj kod seedowania tutaj
+            var adminUser = userManager.FindByEmailAsync("admin@example.com").Result;
+
+            if (adminUser == null)
+            {
+                adminUser = new ApplicationUser
+                {
+                    UserName = "admin",
+                    Email = "admin@example.com",
+                    Password = "Password123!", // Ustaw hasło tutaj
+                };
+
+                // Użyj PasswordHasher do zahashowania hasła
+                var passwordHash = userManager.PasswordHasher.HashPassword(adminUser, adminUser.Password);
+                adminUser.PasswordHash = passwordHash;
+
+                userManager.CreateAsync(adminUser).Wait();
+
+                // Sprawdź, czy rola "Administrator" istnieje
+                var roleExists = roleManager.RoleExistsAsync("Administrator").Result;
+
+                if (!roleExists)
+                {
+                    // Jeśli rola nie istnieje, utwórz ją
+                    roleManager.CreateAsync(new IdentityRole("Administrator")).Wait();
+                }
+
+                var token = userManager.GenerateEmailConfirmationTokenAsync(adminUser).Result;
+                userManager.ConfirmEmailAsync(adminUser, token).Wait();
+                userManager.AddToRoleAsync(adminUser, "Administrator").Wait();
+            }
+        }
+
+
     }
 }

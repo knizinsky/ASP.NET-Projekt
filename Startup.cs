@@ -43,20 +43,12 @@ namespace GroceryStore
             RoleManager<IdentityRole> roleManager
         )
         {
-            if (userManager.FindByEmailAsync("admin@example.com").Result == null)
+            using (var scope = app.ApplicationServices.CreateScope())
             {
-                ApplicationUser user = new ApplicationUser { Email = "admin@example.com", };
-
-                if (!roleManager.RoleExistsAsync("Administrator").Result)
-                {
-                    IdentityRole role = new IdentityRole { Name = "Administrator" };
-                    IdentityResult roleResult = roleManager.CreateAsync(role).Result;
-
-                    if (roleResult.Succeeded)
-                    {
-                        userManager.AddToRoleAsync(user, "Administrator").Wait();
-                    }
-                }
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var userManager1 = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var roleManager1 = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                ApplicationDbContext.SeedData(context, userManager1, roleManager1);
             }
 
             if (env.IsDevelopment())

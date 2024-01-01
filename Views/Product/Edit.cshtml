@@ -6,7 +6,7 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="Edit" asp-route-id="@Model.ProductId">
+<form asp-action="Edit" asp-route-id="@Model.ProductId" method="post">
     <div class="form-group">
         <label for="Name">Nazwa:</label>
         <input asp-for="Name" class="form-control" />
@@ -17,6 +17,5 @@
         <input asp-for="Price" class="form-control" />
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
-    <!-- Dodaj inne pola według potrzeb -->
-    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+    <button type="submit" class="btn btn-primary mt-3">Zapisz zmiany</button>
 </form>
