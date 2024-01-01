@@ -27,14 +27,12 @@ namespace GroceryStore.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            // Konfiguracje relacji i innych ustawień
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Orders)
                 .WithMany(o => o.Products)
                 .UsingEntity(j => j.ToTable("OrderProducts"));
         }
 
-        // Klasa fabryki kontekstu dla migracji
         public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
         {
             public ApplicationDbContext CreateDbContext(string[] args)
@@ -52,7 +50,6 @@ namespace GroceryStore.Models
             }
         }
 
-        // Metoda do tworzenia konta administratora
         public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             var adminEmail = "admin@example.com";
@@ -75,11 +72,9 @@ namespace GroceryStore.Models
 
                 if (!roleExists)
                 {
-                    // Jeśli rola nie istnieje, utwórz ją
                     roleManager.CreateAsync(new IdentityRole("Administrator")).Wait();
                 }
 
-                // Przypisz użytkownikowi rolę "Administrator"
                 var token = userManager.GenerateEmailConfirmationTokenAsync(adminUser).Result;
                 userManager.ConfirmEmailAsync(adminUser, token).Wait();
                 userManager.AddToRoleAsync(adminUser, "Administrator").Wait();
@@ -90,7 +85,6 @@ namespace GroceryStore.Models
         {
             Initialize(context, userManager, roleManager);
 
-            // Dodaj kod seedowania tutaj
             var adminUser = userManager.FindByEmailAsync("admin@example.com").Result;
 
             if (adminUser == null)
@@ -99,21 +93,18 @@ namespace GroceryStore.Models
                 {
                     UserName = "admin",
                     Email = "admin@example.com",
-                    Password = "Password123!", // Ustaw hasło tutaj
+                    Password = "Password123!",
                 };
 
-                // Użyj PasswordHasher do zahashowania hasła
                 var passwordHash = userManager.PasswordHasher.HashPassword(adminUser, adminUser.Password);
                 adminUser.PasswordHash = passwordHash;
 
                 userManager.CreateAsync(adminUser).Wait();
 
-                // Sprawdź, czy rola "Administrator" istnieje
                 var roleExists = roleManager.RoleExistsAsync("Administrator").Result;
 
                 if (!roleExists)
                 {
-                    // Jeśli rola nie istnieje, utwórz ją
                     roleManager.CreateAsync(new IdentityRole("Administrator")).Wait();
                 }
 
